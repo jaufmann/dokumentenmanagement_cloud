@@ -19,7 +19,7 @@ import org.apache.jena.rdf.model.RDFNode;
 public class Szenario2 {
 	
 	public static void main(String[] args) {
-		String fileName = "data/A-Box.owl";
+		String fileName = "data/A-Box_Cloud_Dokumente.owl";
 		OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 		try {
 			File file = new File(fileName);
@@ -27,12 +27,16 @@ public class Szenario2 {
 			model.read(reader,null);
 			
 			String sparQuery = "PREFIX foaf: <http://www.semanticweb.org/alinasiebert/ontologies/2016/0/Cloud_Dokumente#>"
+			+ "	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+			+ " PREFIX mebase: <http://www.semanticweb.org/alinasiebert/ontologies/2016/0/Cloud_Dokumente#>"
 			+ " SELECT ?Speicherort "
 			+ " WHERE  { ?Dokument foaf:Dokument_hat_Verfasser ?Mitarbeiter ."
 			+ "			 ?Dokument foaf:Speicherort ?Speicherort . "
-			+ "			 ?x foaf:Dokumenttyp 'Textdokument' ."
+			+ " 		 ?Dokument foaf:Schlagwort 'Kostenverteilung' ."
 			+ "			 ?Mitarbeiter foaf:Name ?Name ."
-			+ "			 FILTER regex(?Name,'Meier')}";
+			+ "			 ?x rdf:type mebase:Besprechungsprotokoll ."
+			+ "			 ?Projekt foaf:Name 'Highnet' ."
+			+ "			 FILTER regex(?Name,'Murakami')}";
 
 			Query query = QueryFactory.create(sparQuery);
 			QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -58,7 +62,7 @@ public class Szenario2 {
 	}
 	
 	public static void getName(String speicherort){
-		String fileName = "data/A-Box.owl";
+		String fileName = "data/A-Box_Cloud_Dokumente.owl";
 		OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 		try {
 			File file = new File(fileName);
